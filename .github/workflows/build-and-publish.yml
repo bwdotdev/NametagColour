@@ -25,7 +25,9 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
       - name: Move Package to Thunderstore dir
-        run: mv bin/Release/netstandard2.1/${{env.DLL}} thunderstore/
+        run: |
+          cp bin/Release/netstandard2.1/${{env.DLL}} thunderstore/
+          cp bin/Release/netstandard2.1/${{env.DLL}} ./
       - name: Bump version
         id: bump
         uses: vers-one/dotnet-project-version-updater@v1.7
@@ -60,11 +62,11 @@ jobs:
           name: ${{ steps.bump.outputs.oldVersion }}
           tag_name: v${{ steps.bump.outputs.oldVersion }}
           files: |
-            ./thunderstore/${{env.DLL}}
+            ${{env.DLL}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push bump
         run: |
-          git add .
+          git add NametagColour.csproj
           git commit -m "[skip] ${{ steps.bump.outputs.oldVersion }} -> ${{ steps.bump.outputs.newVersion }}"
           git push origin
