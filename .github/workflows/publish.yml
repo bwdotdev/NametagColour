@@ -18,6 +18,7 @@ jobs:
           token: ${{ secrets.THUNDERSTORE_TOKEN }}
           version: ${{ github.ref_name }}
           community: repo
+          repo: thunderstore.io
           categories: |
             clientside
             misc
