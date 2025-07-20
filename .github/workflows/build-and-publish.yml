@@ -12,6 +12,8 @@ jobs:
   build:
     if: "!contains(github.event.head_commit.message, '[skip]')"
     runs-on: ubuntu-latest
+    env:
+      DLL: "dev.bw.nametag_colour.dll"
     steps:
       - uses: actions/checkout@v4
       - name: Setup dotnet
@@ -23,7 +25,7 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
       - name: Move Package to Thunderstore dir
-        run: mv bin/Release/netstandard2.1/*.dll thunderstore/
+        run: mv bin/Release/netstandard2.1/${{env.DLL}} thunderstore/
       - name: Bump version
         id: bump
         uses: vers-one/dotnet-project-version-updater@v1.7
@@ -58,7 +60,7 @@ jobs:
           name: ${{ steps.bump.outputs.oldVersion }}
           tag_name: v${{ steps.bump.outputs.oldVersion }}
           files: |
-            thunderstore/*.dll
+            thunderstore/${{env.DLL}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push bump
