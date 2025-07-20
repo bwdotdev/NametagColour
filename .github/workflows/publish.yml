@@ -19,6 +19,7 @@ jobs:
           version: ${{ github.ref_name }}
           community: repo
           repo: thunderstore.io
+          deps: BepInEx-BepInExPack@5.4.2100
           categories: |
             clientside
             misc
