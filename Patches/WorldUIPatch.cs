@@ -1,6 +1,8 @@
 using HarmonyLib;
 using UnityEngine;
 
+namespace NametagColour.Patches;
+
 [HarmonyPatch(typeof(WorldSpaceUIPlayerName), "Update")]
 public class WorldUIPatch
 {
@@ -12,8 +14,8 @@ public class WorldUIPatch
     if (text == null || player?.playerAvatarVisuals == null) return;
 
     Color currentColor = text.color;
-    Color desiredRGB = player.playerAvatarVisuals.color;
+    Color playerColor = player.playerAvatarVisuals.color;
 
-    text.color = new Color(desiredRGB.r, desiredRGB.g, desiredRGB.b, currentColor.a);
+    text.color = new Color(playerColor.r, playerColor.g, playerColor.b, currentColor.a);
   }
 }
