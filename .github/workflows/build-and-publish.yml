@@ -60,7 +60,7 @@ jobs:
           name: ${{ steps.bump.outputs.oldVersion }}
           tag_name: v${{ steps.bump.outputs.oldVersion }}
           files: |
-            thunderstore/${{env.DLL}}
+            ./thunderstore/${{env.DLL}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push bump
