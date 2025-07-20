@@ -1,0 +1,47 @@
+name: Build & Publish Mod
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Move Package to Thunderstore dir
+        run: mv bin/Debug/netstandard2.1/*.dll thunderstore/
+      - uses: GreenTF/upload-thunderstore-package@v4.3
+        with:
+          namespace: bwdotdev
+          name: NametagColour
+          description: Sync the colour of your nametag with the colour of your character
+          path: thunderstore
+          token: ${{ secrets.THUNDERSTORE_TOKEN }}
+          version: ${{ github.ref_name }}
+          community: repo
+          repo: thunderstore.io
+          deps: BepInEx-BepInExPack@5.4.2100
+          categories: |
+            clientside
+            misc
+            mods
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          make_latest: true
+          files: |
+            thunderstore/*.dll
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
