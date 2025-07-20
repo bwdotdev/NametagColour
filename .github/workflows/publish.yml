@@ -1,0 +1,24 @@
+name: Publish Mod
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: GreenTF/upload-thunderstore-package@v4.3
+        with:
+          namespace: bwdotdev
+          name: NametagColour
+          description: Sync the colour of your nametag with the colour of your character
+          token: ${{ secrets.THUNDERSTORE_TOKEN }}
+          version: ${{ github.ref_name }}
+          community: repo
+          categories: |
+            clientside
+            misc
+            mods
